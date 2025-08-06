@@ -2,40 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>زيارة mobyscreener</title>
+  <title>زيارة تلقائية</title>
   <style>
-    body { margin: 0; padding: 0; }
-    iframe { width: 100%; height: 100vh; border: none; }
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
+    #start {
+      display: none;
+      padding: 15px 30px;
+      background-color: green;
+      color: white;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- iframe لعرض موقع mobyscreener -->
-  <iframe id="mobiframe" src="https://mobyscreener.com/?ref=MOBY64631861"></iframe>
+  <h2>⏳ انتظر قليلاً، جاري فتح الموقع...</h2>
+  <p id="status">سيتم التفاعل بعد ثوانٍ...</p>
+  <button id="start">🔁 تفاعل الآن</button>
 
   <script>
-    // بعد 8 ثواني، نحاول نرسل scroll
-    setTimeout(() => {
-      try {
-        // غير ممكن بسبب حماية X-Frame-Options
-        document.getElementById('mobiframe').contentWindow.scrollTo({ top: 800, behavior: 'smooth' });
-      } catch (err) {
-        console.log("⛔ لا يمكن تنفيذ scroll داخل iframe: الموقع محمي (CORS/XFO)");
-      }
-    }, 8000);
+    // روابط المواقع
+    const links = [
+      "https://mobyscreener.com/?ref=MOBY64631861",
+      "https://mahalux.xyz/",
+      "https://t.co/0SzTedBuIM"
+    ];
 
-    // بعد 14 ثانية، نحاول نضغط على عملة
+    // اختيار رابط عشوائي
+    const target = links[Math.floor(Math.random() * links.length)];
+
+    // الانتظار 10 ثواني ثم إظهار زر التفاعل
     setTimeout(() => {
-      try {
-        let doc = document.getElementById('mobiframe').contentDocument || document.getElementById('mobiframe').contentWindow.document;
-        let links = doc.querySelectorAll("a[href*='/coin/']");
-        if (links.length > 0) {
-          links[Math.floor(Math.random() * links.length)].click();
+      document.getElementById("status").innerText = "👇 اضغط على الزر لتفعيل التفاعل داخل الموقع";
+      document.getElementById("start").style.display = "inline-block";
+    }, 10000);
+
+    // عند الضغط على الزر
+    document.getElementById("start").onclick = () => {
+      // فتح الموقع في نافذة جديدة
+      const win = window.open(target, "_blank");
+
+      // نرسل له سكريبت scroll + click
+      setTimeout(() => {
+        try {
+          win.scrollTo({ top: 600, behavior: "smooth" });
+        } catch (err) {
+          console.log("⚠️ لا يمكن التفاعل داخل النافذة الجديدة بسبب حماية الموقع.");
         }
-      } catch (e) {
-        console.log("⛔ لا يمكن الوصول إلى العناصر داخل iframe بسبب الحماية");
-      }
-    }, 14000);
+      }, 3000);
+    };
   </script>
 
 </body>
