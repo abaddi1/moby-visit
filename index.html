@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>زيارة لموبي سكرين</title>
+    <meta charset="utf-8">
+    <style>
+      body { height: 2000px; font-family: Arial; text-align: center; }
+      button { margin-top: 100px; padding: 20px; font-size: 20px; }
+    </style>
+  </head>
+  <body>
+    <h1>جاري التفاعل مع الموقع...</h1>
+    <button onclick="window.location.href='https://mobyscreener.com/?ref=MOBY64631861'">ادخل الآن</button>
+
+    <script>
+      // Scroll بعد 5 ثواني
+      setTimeout(() => {
+        window.scrollTo({ top: 1000, behavior: 'smooth' });
+      }, 5000);
+
+      // Click تلقائي بعد 10 ثواني
+      setTimeout(() => {
+        document.querySelector('button').click();
+      }, 10000);
+    </script>
+  </body>
+</html>
