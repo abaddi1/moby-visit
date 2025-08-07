@@ -1,73 +1,277 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>تفاعل ذكي | Mobyscreener</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Tahoma, sans-serif;
-    }
-    body {
-      margin: 0;
-      display: flex;
-      height: 100vh;
-      background: #f9f9f9;
-    }
-    #control {
-      width: 30%;
-      padding: 30px 20px;
-      background: linear-gradient(145deg, #ececec, #ffffff);
-      border-left: 1px solid #ccc;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-    #control h2 {
-      color: #333;
-      margin-bottom: 20px;
-    }
-    #status {
-      font-size: 20px;
-      font-weight: bold;
-      color: #007bff;
-      margin-top: 10px;
-    }
-    #frame {
-      width: 70%;
-      height: 100vh;
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human-Like Visit Bot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </head>
-<body>
-  <div id="control">
-    <h2>⏳ انتظر قليلاً، جاري التفاعل مع الموقع...</h2>
-    <p id="status">يبدأ التفاعل بعد 10 ثواني</p>
-  </div>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Human-Like Visit Bot
+            </h1>
+            <p class="text-slate-300">Simulate real human traffic with advanced browser automation</p>
+        </div>
 
-  <div id="frame">
-    <iframe id="site" src="https://mobyscreener.com/?ref=MOBY64631861"></iframe>
-  </div>
+        <!-- Main Card -->
+        <div class="max-w-4xl mx-auto bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700 overflow-hidden">
+            
+            <!-- Status Section -->
+            <div class="p-6 border-b border-slate-700">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                        <span class="text-lg font-semibold">Status: <span id="status" class="text-slate-300">Idle</span></span>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-green-400" id="visitCount">0</div>
+                        <div class="text-sm text-slate-400">visits completed</div>
+                    </div>
+                </div>
+            </div>
 
-  <script>
-    let count = 10;
-    const status = document.getElementById("status");
-    const interval = setInterval(() => {
-      count--;
-      if (count > 0) {
-        status.innerText = `يبدأ التفاعل بعد ${count} ثواني`;
-      } else {
-        status.innerText = "✅ تم فتح الموقع بنجاح... جاري التفاعل";
-        clearInterval(interval);
-      }
-    }, 1000);
-  </script>
+            <!-- Configuration Panel -->
+            <div class="p-6 grid md:grid-cols-2 gap-6">
+                
+                <!-- Left Column -->
+                <div class="space-y-6">
+                    <div class="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            Visit Settings
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Target Visits</label>
+                                <input type="number" id="targetVisits" value="200" 
+                                    class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Device Type</label>
+                                <select id="deviceType" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                    <option value="mobile">Mobile (Smartphone)</option>
+                                    <option value="desktop">Desktop</option>
+                                </select>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="useProxy" class="w-4 h-4 text-purple-600 rounded focus:ring-purple-500">
+                                <label class="text-sm">Use Proxy/VPN</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+                        <h3 class="text-lg font-semibold mb-4">Target URLs</h3>
+                        <div id="urlList" class="space-y-2 text-sm text-slate-300">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span>https://mobyscreener.com/?ref=MOBY64631861</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span>https://mahalux.xyz/</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span>https://t.co/0SzTedBuIM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    <div class="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+                        <h3 class="text-lg font-semibold mb-4">Behavior Settings</h3>
+                        <div class="space-y-4 text-sm text-slate-300">
+                            <div class="flex items-center justify-between">
+                                <span>Random scrolling</span>
+                                <span class="text-green-400">✓ Enabled</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>Natural delays</span>
+                                <span class="text-green-400">✓ Enabled</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>Random clicks</span>
+                                <span class="text-green-400">✓ Enabled</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>Multi-tab browsing</span>
+                                <span class="text-green-400">✓ 2-3 tabs</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>Session cleanup</span>
+                                <span class="text-green-400">✓ Full reset</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+                        <h3 class="text-lg font-semibold mb-4">Performance</h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between">
+                                <span>Current Rate:</span>
+                                <span class="text-purple-400">~220 visits/hour</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Session Interval:</span>
+                                <span>2 seconds</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Browser:</span>
+                                <span>Brave/Chrome</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="p-6 bg-slate-800/80 border-t border-slate-700">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button id="startBtn" 
+                        class="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2 shadow-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.5a2.5 2.5 0 010 5H9m0-5a3 3 0 110 6h1.5a2.5 2.5 0 000-5H9z"></path>
+                        </svg>
+                        <span>Start Bot</span>
+                    </button>
+                    
+                    <button id="pauseBtn" disabled
+                        class="px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2 shadow-lg opacity-50 cursor-not-allowed">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Pause</span>
+                    </button>
+                    
+                    <button id="stopBtn" disabled
+                        class="px-8 py-3 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2 shadow-lg opacity-50 cursor-not-allowed">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10h6v4H9z"></path>
+                        </svg>
+                        <span>Stop</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Progress Visualization -->
+            <div class="p-6 bg-slate-800/30">
+                <h3 class="text-center text-lg font-semibold mb-4">Visit Progress</h3>
+                <div class="w-full bg-slate-700 rounded-full h-3">
+                    <div id="progressBar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <div class="text-center mt-2 text-sm text-slate-400">
+                    <span id="progressText">0%</span> complete
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8 text-sm text-slate-500">
+            <p>Advanced human-like browser automation • Bypasses bot detection • Mobile emulation • Session rotation</p>
+        </div>
+    </div>
+
+    <script>
+        // Simulate bot functionality
+        let isRunning = false;
+        let visitCount = 0;
+        let targetVisits = 200;
+        let intervalId = null;
+
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const status = document.getElementById('status');
+        const visitCountEl = document.getElementById('visitCount');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const targetVisitsInput = document.getElementById('targetVisits');
+
+        function updateProgress() {
+            const progress = Math.min(100, (visitCount / targetVisits) * 100);
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${Math.round(progress)}%`;
+            visitCountEl.textContent = visitCount;
+        }
+
+        startBtn.addEventListener('click', () => {
+            if (!isRunning) {
+                isRunning = true;
+                targetVisits = parseInt(targetVisitsInput.value) || 200;
+                status.textContent = 'Active';
+                status.parentElement.querySelector('div').classList.remove('bg-red-500');
+                status.parentElement.querySelector('div').classList.add('bg-green-500');
+                
+                startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                pauseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                stopBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                pauseBtn.disabled = false;
+                stopBtn.disabled = false;
+                startBtn.disabled = true;
+
+                // Simulate visits
+                intervalId = setInterval(() => {
+                    // Simulate 1-3 visits per cycle to reach target of 200-250 per hour
+                    const visitsThisCycle = Math.floor(Math.random() * 3) + 1;
+                    visitCount = Math.min(targetVisits, visitCount + visitsThisCycle);
+                    updateProgress();
+
+                    if (visitCount >= targetVisits) {
+                        stopBot();
+                    }
+                }, 2000); // Every 2 seconds
+            }
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            if (isRunning) {
+                isRunning = false;
+                clearInterval(intervalId);
+                status.textContent = 'Paused';
+                status.parentElement.querySelector('div').classList.remove('bg-green-500');
+                status.parentElement.querySelector('div').classList.add('bg-yellow-500');
+                
+                pauseBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                pauseBtn.disabled = true;
+                startBtn.disabled = false;
+            }
+        });
+
+        stopBtn.addEventListener('click', () => {
+            stopBot();
+        });
+
+        function stopBot() {
+            isRunning = false;
+            if (intervalId) clearInterval(intervalId);
+            status.textContent = 'Stopped';
+            status.parentElement.querySelector('div').classList.remove('bg-green-500', 'bg-yellow-500');
+            status.parentElement.querySelector('div').classList.add('bg-red-500');
+            
+            startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            pauseBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            stopBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            stopBtn.disabled = true;
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
 </body>
 </html>
