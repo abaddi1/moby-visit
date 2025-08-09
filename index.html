@@ -1,26 +1,30 @@
-// سكريبت أوتوماتيكي كامل
-window.addEventListener('load', function () {
-    // مهلة قصيرة باش الصفحة تكمل تحميلها
-    setTimeout(() => {
-        // سكرول تدريجي لأسفل الصفحة
-        let scrollInterval = setInterval(() => {
-            window.scrollBy(0, 50);
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-                clearInterval(scrollInterval);
+// ==UserScript==
+// @name         Auto Click Specific Links
+// @namespace    http://tampermonkey.net/
+// @version      1.0
+// @description  Auto click on specific links when the page loads
+// @match        https://www.mobyscreener.com/*
+// @grant        none
+// ==/UserScript==
 
-                // بعد ما يوصل للأسفل، يختار عملة عشوائية
-                setTimeout(() => {
-                    let coins = document.querySelectorAll('a, button, div');
-                    coins = Array.from(coins).filter(el => el.innerText && el.innerText.match(/\b[A-Z]{2,5}\b/)); // نصوص مختصرة مثل BTC, ETH
-                    if (coins.length > 0) {
-                        let randomCoin = coins[Math.floor(Math.random() * coins.length)];
-                        randomCoin.click();
-                        console.log('✅ تم النقر على عملة:', randomCoin.innerText);
-                    } else {
-                        console.log('❌ لم يتم العثور على عملات');
-                    }
-                }, 1000);
+(function() {
+    'use strict';
+
+    // List of target links
+    const targetLinks = [
+        "https://www.mobyscreener.com/solana/2B5Rs88FYyFp4XciFrJ7zovvEeybiinZA8PXsSptBAGS",
+        "https://www.mobyscreener.com/solana/mkvXiNBpa8uiSApe5BrhWVJaT87pJFTZxRy7zFapump"
+    ];
+
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const links = document.querySelectorAll('a');
+            for (let link of links) {
+                if (targetLinks.includes(link.href)) {
+                    link.click();
+                    break;
+                }
             }
-        }, 100);
-    }, 2000);
-});
+        }, 5000); // wait 5 seconds before clicking
+    });
+})();
